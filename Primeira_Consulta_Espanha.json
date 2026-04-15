@@ -1,0 +1,373 @@
+{
+    "version": "7.3",
+    "data_api_version": "3.0",
+    "routing_model": {
+        "primeira_tela": ["segunda_tela", "quarta_tela"],
+        "segunda_tela": [],
+        "terceira_tela": [],
+        "quarta_tela": ["quinta_tela"],
+        "quinta_tela": ["terceira_tela"]
+    },
+    "screens": [
+        {
+            "id": "primeira_tela",
+            "title": "Primera cita",
+            "terminal": false,
+            "layout": {
+                "type": "SingleColumnLayout",
+                "children": [
+                    {
+                        "type": "Form",
+                        "name": "clinica_form",
+                        "children": [
+                            {
+                                "type": "TextSubheading",
+                                "text": "¡Perfecto! ¿Qué clínica le es más factible?"
+                            },
+                            {
+                                "type": "RadioButtonsGroup",
+                                "name": "clinica",
+                                "required": true,
+                                "label": "Selecciona una de las siguientes opciones",
+                                "data-source": [
+                                    {
+                                        "id": "barcelona",
+                                        "title": "BARCELONA",
+                                        "description": "Av. Diagonal, 605, Planta 2, Les Corts, 08028 Barcelona, Spain"
+                                    },
+                                    {
+                                        "id": "bilbao",
+                                        "title": "BILBAO",
+                                        "description": "Edificio Moyúa, Ercilla Kalea, 24, planta 3ª, Abando, 48009 Bilbao, Biscay, Spain"
+                                    },
+                                    {
+                                        "id": "madrid",
+                                        "title": "MADRID",
+                                        "description": "C. de Joaquín Costa, 26, Chamartín, 28002 Madrid, Spain"
+                                    },
+                                    {
+                                        "id": "malaga",
+                                        "title": "MÁLAGA",
+                                        "description": "Pl. de la Solidaridad, 12, Distrito Centro, 29006 Málaga, Spain"
+                                    },
+                                    {
+                                        "id": "valencia",
+                                        "title": "VALENCIA",
+                                        "description": "Av. de les Corts Valencianes, 15, Plantas 1 y 2, Campanar, 46015 València, Valencia, Spain"
+                                    },
+                                    {
+                                        "id": "nenhum",
+                                        "title": "Ninguna disponible",
+                                        "description": "No puedo acudir a ninguna de las clínicas de la lista."
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "If",
+                                "condition": "${form.clinica} == 'nenhum'",
+                                "then": [
+                                    {
+                                    "type": "Footer",
+                                        "label": "Continuar",
+                                        "on-click-action": {
+                                            "name": "navigate",
+                                            "next": {
+                                                "type": "screen",
+                                                "name": "quarta_tela"
+                                            }
+                                        } 
+                                    }
+                                ],
+                                "else": [
+                                    {
+                                        "type": "Footer",
+                                        "label": "Continuar",
+                                        "on-click-action": {
+                                            "name": "navigate",
+                                            "next": {
+                                                "type": "screen",
+                                                "name": "segunda_tela"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "id": "quarta_tela",
+            "title": "Primera cita",
+            "terminal": true,
+            "layout": {
+                "type": "SingleColumnLayout",
+                "children": [
+                    {
+                        "type": "Form",
+                        "name": "consulta_online",
+                        "children": [
+                            {
+                                "type": "TextSubheading",
+                                "text": "Para avanzar, necesitamos conocer tu preferencia."
+                            },
+                            {
+                                "type": "RadioButtonsGroup",
+                                "name": "consulta_online",
+                                "required": true,
+                                "label": "¿Desea solicitar una cita online?",
+                                "data-source": [
+                                    {
+                                        "id": "sim",
+                                        "title": "Sí"
+                                    },
+                                    {
+                                        "id": "nao",
+                                        "title": "No"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "If",
+                                "condition":"${form.consulta_online} == 'nao'",
+                                "then": [
+                                    {
+                                        "type": "TextBody",
+                                        "text": "Compreendemos. Se mudar de ideias ou precisar de ajuda, pode voltar a falar connosco a qualquer momento. 😊"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "If",
+                                "condition": "${form.consulta_online} == 'sim'",
+                                "then": [
+                                    {
+                                    "type": "Footer",
+                                        "label": "Continuar",
+                                        "on-click-action": {
+                                            "name": "data_exchange",
+                                            "payload": {
+                                                "screen": "quinta_tela"
+                                            }
+                                        } 
+                                    }
+                                ],
+                                "else": [
+                                    {
+                                        "type": "Footer",
+                                        "label": "Finalizar",
+                                        "on-click-action": {
+                                            "name": "complete",
+                                            "payload": {}
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "id": "segunda_tela",
+            "title": "Primera cita",
+            "terminal": true,
+            "layout": {
+                "type": "SingleColumnLayout",
+                "children": [
+                    {
+                        "type": "Form",
+                        "name": "dados_form",
+                        "children": [
+                            {
+                                "type": "TextSubheading",
+                                "text": "Para finalizar, te pedimos que indique algunos datos personales."
+                            },
+                            {
+                                "type": "TextBody",
+                                "text": "Su nombre completo"
+                            },
+                            {
+                                "type": "TextInput",
+                                "label": "Nombre completo",
+                                "name": "nome",
+                                "required": true
+                            },
+                            {
+                                "type": "TextBody",
+                                "text": "Su fecha de nacimiento"
+                            },
+                            {
+                                "type": "DatePicker",
+                                "label": "Fecha de nacimiento",
+                                "name": "data_nascimento",
+                                "required": true,
+                                "min-date": "1900-01-01",
+                                "max-date": "2020-01-01"
+                            },
+                            {
+                                "type": "TextBody",
+                                "text": "Su correo electrónico"
+                            },
+                            {
+                                "type": "TextInput",
+                                "label": "Correo electrónico",
+                                "name": "email",
+                                "input-type": "email",
+                                "required": true
+                            },
+                            {
+                                "type": "Footer",
+                                "label": "Enviar",
+                                "on-click-action": {
+                                    "name": "complete",
+                                    "payload": {}
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "id": "quinta_tela",
+            "title": "Primera cita",
+            "terminal": false,
+            "layout": {
+                "type": "SingleColumnLayout",
+                "children": [
+                    {
+                        "type": "Form",
+                        "name": "dados_form",
+                        "children": [
+                            {
+                                "type": "TextSubheading",
+                                "text": "Para continuar, te pedimos que indique algunos datos personales."
+                            },
+                            {
+                                "type": "TextBody",
+                                "text": "Su nombre completo"
+                            },
+                            {
+                                "type": "TextInput",
+                                "label": "Nombre completo",
+                                "name": "nome",
+                                "required": true
+                            },
+                            {
+                                "type": "TextBody",
+                                "text": "Su fecha de nacimiento"
+                            },
+                            {
+                                "type": "DatePicker",
+                                "label": "Fecha de nacimiento",
+                                "name": "data_nascimento",
+                                "required": true,
+                                "min-date": "1900-01-01",
+                                "max-date": "2020-01-01"
+                            },
+                            {
+                                "type": "TextBody",
+                                "text": "Su correo electrónico"
+                            },
+                            {
+                                "type": "TextInput",
+                                "label": "Correo electrónico",
+                                "name": "email",
+                                "input-type": "email",
+                                "required": true
+                            },
+                            {
+                                "type": "TextBody",
+                                "text": "Su género"
+                            },
+                            {
+                                "type": "Dropdown",
+                                "name": "genero",
+                                "label": "Género",
+                                "required": true,
+                                "data-source": [
+                                    {
+                                        "id": "masculino",
+                                        "title": "Masculino"
+                                    },
+                                    {
+                                        "id": "feminino",
+                                        "title": "Femenino"
+                                    },
+                                    {
+                                        "id": "outro",
+                                        "title": "Otro"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "Footer",
+                                "label": "Continuar",
+                                "on-click-action": {
+                                    "name": "data_exchange",
+                                    "payload": {
+                                        "screen": "terceira_tela"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "id": "terceira_tela",
+            "title": "Primera cita",
+            "terminal": true,
+            "layout": {
+                "type": "SingleColumnLayout",
+                "children": [
+                    {
+                        "type": "Form",
+                        "name": "procedimento_form",
+                        "children": [
+                            {
+                                "type": "TextSubheading",
+                                "text": "Para finalizar, indica el área de tu interés."
+                            },
+                            {
+                                "type": "Dropdown",
+                                "name": "area",
+                                "label": "Área",
+                                "required": true,
+                                "data-source": [
+                                    {
+                                        "id": "couro_cabeludo",
+                                        "title": "Cabello"
+                                    },
+                                    {
+                                        "id": "barba",
+                                        "title": "Barba"
+                                    },
+                                    {
+                                        "id": "sobrancelhas",
+                                        "title": "Cejas"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "TextCaption",
+                                "text": "Nota: El procedimiento esta sujeto a diagnostico por nuestro equipo médico."
+                            },
+                            {
+                                "type": "Footer",
+                                "label": "Enviar",
+                                "on-click-action": {
+                                    "name": "complete",
+                                    "payload": {}
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}
